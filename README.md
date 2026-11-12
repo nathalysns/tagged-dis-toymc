@@ -9,15 +9,15 @@ python validate.py out/tagged_10x110.npz        # closure tests + control plots
 ```
 
 Outputs: `*.hepmc` (HepMC3, ready for npsim/afterburner), `*.npz` (thrown variables, invariants,
-4-vectors, weights) and `*_summary.json` (cross section and settings).
+4-vectors, weights) and `*_summary.json` (settings).
 
 ## Workflow
 1. Throw `(x, Q², φ_e)` and `(α_p, p_T², φ_p)`. Samplers are in `tagdis/models.py`.
 2. Build the scattered electron in the D rest frame, define the collinear frame (D at rest, **q along −z**,
    x-axis along the electron's transverse momentum), place the proton using `p⁺ = α_p M_D/2`,
    `p⁻ = (m_p² + p_T²)/p⁺`, and boost to the lab (`tagdis/kinematics.py`).
-3. Weight: `w = σ_red / pdf_throw`, with
-   `σ_red = dσ/(dx dQ² dφ_e dα_p dp_T² dφ_p)` in nb/GeV⁴. The weights sum to σ in the cuts.
+3. Weight: `w = σ_red / pdf_throw`.
+   - `σ_red`: *to be provided (theory input).*
 4. Optionally unweight by accept–reject.
 
 `kinematics.reconstruct()` is the inverse map from lab 4-vectors back to the collinear-frame variables.
@@ -33,9 +33,9 @@ The same function can be used on reconstructed (smeared) events.
 - HepMC: beams have status 4; e' and p have status 1; X is written as PDG 99 with status 2,
   so it is not tracked.
 
-## Plugging in theory input
-- **Cross section:** add a function `f(kin) -> array` to `CROSS_SECTIONS` in `tagdis/models.py`.
-  `kin` contains the thrown variables, the invariants, the lab 4-vectors and the spins.
-- **Throwing prescription:** pass any density `f(α, p_T)` to `GridSpectatorSampler`, or write a
-  sampler that returns the variables together with their pdf.
-- `ia-toy` is a **placeholder**: neutron DIS (toy F2) × Hulthén light-cone density, with no FSI or spin dependence.
+## Theory input
+- **Reduced cross section:** *to be provided.*
+- **Throwing prescription for the spectator:** *to be provided.*
+
+Both go in `tagdis/models.py`. The `ia-toy` model and the Hulthén sampling currently in the code
+are temporary placeholders for testing the machinery only.
