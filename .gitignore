@@ -1,0 +1,15 @@
+# generated output (large; regenerate with generate.py)
+out/
+*.hepmc
+*.npz
+*.png
+*_summary.json
+
+# python
+__pycache__/
+*.pyc
+
+# macOS / Dropbox
+.DS_Store
+.dropbox
+Icon?
